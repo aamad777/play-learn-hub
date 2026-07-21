@@ -2,7 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Play, Camera, BookOpen, Sparkles } from "lucide-react";
 import { KidCard } from "@/components/KidCard";
 import { BottomNav } from "@/components/BottomNav";
-import heroImage from "@/assets/hero-illustration.jpg";
+import { AnimatedHero } from "@/components/AnimatedHero";
+
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -27,13 +28,8 @@ function Index() {
 
         {/* Hero */}
         <section className="mb-8 overflow-hidden rounded-[2rem] bg-card soft-shadow">
-          <img
-            src={heroImage}
-            alt="Cute bear and rabbit playing under a smiling sun"
-            className="w-full object-cover"
-            width={1024}
-            height={768}
-          />
+          <AnimatedHero />
+
           <div className="px-6 py-6 text-center">
             <h2 className="font-heading text-3xl font-extrabold text-foreground sm:text-4xl">
               Hello, little explorer!
