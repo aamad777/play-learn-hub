@@ -1,20 +1,28 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Camera, ArrowLeft, Heart } from "lucide-react";
 import { BottomNav } from "@/components/BottomNav";
+import puppyImg from "@/assets/photo-puppy.jpg";
+import flowerImg from "@/assets/photo-flower.jpg";
+import carImg from "@/assets/photo-car.jpg";
+import starImg from "@/assets/photo-star.jpg";
+import appleImg from "@/assets/photo-apple.jpg";
+import fishImg from "@/assets/photo-fish.jpg";
+import ballImg from "@/assets/photo-ball.jpg";
+import moonImg from "@/assets/photo-moon.jpg";
 
 export const Route = createFileRoute("/photos")({
   component: PhotosPage,
 });
 
 const photos = [
-  { id: 1, label: "Puppy", emoji: "🐶", color: "bg-peach-soft" },
-  { id: 2, label: "Flower", emoji: "🌸", color: "bg-sky-soft" },
-  { id: 3, label: "Car", emoji: "🚗", color: "bg-mint" },
-  { id: 4, label: "Star", emoji: "⭐", color: "bg-sun" },
-  { id: 5, label: "Apple", emoji: "🍎", color: "bg-peach-soft" },
-  { id: 6, label: "Fish", emoji: "🐟", color: "bg-sky-soft" },
-  { id: 7, label: "Ball", emoji: "🏀", color: "bg-mint" },
-  { id: 8, label: "Moon", emoji: "🌙", color: "bg-sun" },
+  { id: 1, label: "Puppy", image: puppyImg, color: "bg-peach-soft" },
+  { id: 2, label: "Flower", image: flowerImg, color: "bg-sky-soft" },
+  { id: 3, label: "Car", image: carImg, color: "bg-mint" },
+  { id: 4, label: "Star", image: starImg, color: "bg-sun" },
+  { id: 5, label: "Apple", image: appleImg, color: "bg-peach-soft" },
+  { id: 6, label: "Fish", image: fishImg, color: "bg-sky-soft" },
+  { id: 7, label: "Ball", image: ballImg, color: "bg-mint" },
+  { id: 8, label: "Moon", image: moonImg, color: "bg-sun" },
 ];
 
 function PhotosPage() {
@@ -38,11 +46,16 @@ function PhotosPage() {
           {photos.map((photo) => (
             <button
               key={photo.id}
-              className={`kid-card toddler-shadow flex flex-col items-center gap-3 p-5 ${photo.color}`}
+              className={`kid-card toddler-shadow flex flex-col items-center gap-3 p-4 ${photo.color}`}
             >
-              <span className="text-5xl" role="img" aria-label={photo.label}>
-                {photo.emoji}
-              </span>
+              <div className="aspect-square w-full overflow-hidden rounded-2xl bg-white/60">
+                <img
+                  src={photo.image}
+                  alt={photo.label}
+                  loading="lazy"
+                  className="h-full w-full object-cover"
+                />
+              </div>
               <span className="font-heading text-lg font-bold text-foreground">{photo.label}</span>
               <Heart className="h-5 w-5 text-peach" />
             </button>
