@@ -1,6 +1,6 @@
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL ||
-  '/api';
+  'http://192.168.0.113:30081/api';
 
 export type ApiHealth = {
   status: string;
