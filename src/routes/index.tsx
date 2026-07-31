@@ -68,17 +68,32 @@ function getStorageItem(key: string): string | null {
 }
 
 function SasaApp() {
-  const [parentToken, setParentToken] = useState<string | null>(() =>
-    getStorageItem("sasa-parent-token")
-  );
+  const [isMounted, setIsMounted] = useState(false);
 
-  const [guestMode, setGuestMode] = useState(() =>
-    getStorageItem("sasa-account-mode") === "guest"
-  );
+  const [parentToken, setParentToken] = useState<string | null>(null);
+  const [guestMode, setGuestMode] = useState(false);
+  const [parentName, setParentName] = useState("Parent");
+  const [customProfiles, setCustomProfiles] = useState<CreatedProfile[]>([]);
+  const [parentControls, setParentControls] = useState<ParentControlSettings>(defaultParentControlSettings);
 
-  const [parentName, setParentName] = useState(() =>
-    getStorageItem("sasa-parent-name") || "Parent"
-  );
+  useEffect(() => {
+    setIsMounted(true);
+    setParentToken(getStorageItem("sasa-parent-token"));
+    setGuestMode(getStorageItem("sasa-account-mode") === "guest");
+    setParentName(getStorageItem("sasa-parent-name") || "Parent");
+
+    try {
+      const savedProfiles = getStorageItem("sasa-custom-profiles");
+      if (savedProfiles) setCustomProfiles(JSON.parse(savedProfiles));
+    } catch {}
+
+    try {
+      const savedControls = getStorageItem("sasa-parent-controls");
+      if (savedControls) {
+        setParentControls({ ...defaultParentControlSettings, ...JSON.parse(savedControls) });
+      }
+    } catch {}
+  }, []);
 
   const [databaseChildren, setDatabaseChildren] = useState<DatabaseChild[]>([]);
   const [databaseChildrenLoading, setDatabaseChildrenLoading] = useState(false);
@@ -118,25 +133,6 @@ function SasaApp() {
       .then((r) => console.log("API connected:", r.service))
       .catch((e: Error) => console.log("API unavailable:", e.message));
   }, []);
-
-  const [customProfiles, setCustomProfiles] = useState<CreatedProfile[]>(() => {
-    try {
-      const saved = getStorageItem("sasa-custom-profiles");
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
-    }
-  });
-
-  const [parentControls, setParentControls] = useState<ParentControlSettings>(() => {
-    try {
-      const saved = getStorageItem("sasa-parent-controls");
-      if (!saved) return defaultParentControlSettings;
-      return { ...defaultParentControlSettings, ...JSON.parse(saved) };
-    } catch {
-      return defaultParentControlSettings;
-    }
-  });
 
   const updateParentControls = (settings: ParentControlSettings) => {
     if (profile) {
